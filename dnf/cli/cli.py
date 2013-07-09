@@ -863,7 +863,7 @@ class YumBaseCli(dnf.yum.base.Base, output.YumOutput):
         """
         for strng in userlist:
             group_matched = False
-            for group in self.comps.return_groups(strng):
+            for group in self.comps.groups_by_pattern(strng):
                 self.displayPkgsInGroups(group)
                 group_matched = True
 
@@ -889,7 +889,7 @@ class YumBaseCli(dnf.yum.base.Base, output.YumOutput):
 
         groups = []
         for group_string in grouplist:
-            matched = self.comps.return_groups(group_string)
+            matched = self.comps.groups_by_pattern(group_string)
             if len(matched) == 0:
                 msg = _('Warning: Group %s does not exist.') % group_string
                 self.logger.error(msg)
