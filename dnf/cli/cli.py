@@ -746,8 +746,7 @@ class YumBaseCli(dnf.yum.base.Base, output.YumOutput):
         if not userlist:
             userlist = None # Match everything...
 
-        installed, available = self.doGroupLists(uservisible=uservisible,
-                                                 patterns=userlist)
+        installed, available = self.group_lists(uservisible, userlist)
 
         if not installed and not available:
             self.logger.error(_('Warning: No groups match: %s'),
@@ -759,7 +758,7 @@ class YumBaseCli(dnf.yum.base.Base, output.YumOutput):
                 self.logger.info(sect)
             msg = '   %s' % group.ui_name
             if self.conf.verbose:
-                msg += ' (%s)' % group.groupid
+                msg += ' (%s)' % group.id
             if group.langonly:
                 msg += ' [%s]' % group.langonly
             self.logger.info('%s', msg)
@@ -814,8 +813,7 @@ class YumBaseCli(dnf.yum.base.Base, output.YumOutput):
         if not userlist:
             userlist = None # Match everything...
 
-        installed, available = self.doGroupLists(uservisible=uservisible,
-                                                 patterns=userlist)
+        installed, available = self.group_lists(uservisible, patterns)
 
         def _out_grp(sect, num):
             if not num:
