@@ -40,6 +40,7 @@ import dnf.comps
 import dnf.exceptions
 import dnf.lock
 import dnf.logging
+import dnf.output
 import dnf.yum.rpmtrans
 import rpmsack
 from dnf.rpmUtils.arch import ArchStorage
@@ -95,6 +96,7 @@ class Base(object):
         self._history = None
         self._tags = None
         self._ts_save_file = None
+        self.ds_callback = dnf.output.DepsolveCallback()
         self.logger = logging.getLogger("dnf")
         self.logging = dnf.logging.Logging()
         self._repos = dnf.repodict.RepoDict()
