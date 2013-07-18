@@ -700,6 +700,18 @@ class StartupConf(BaseConfig):
         super(StartupConf, self).__init__()
         self.yumvar = {}
 
+
+    @property
+    def releasever(self):
+        return self.yumvar.get('releasever')
+
+    @releasever.setter
+    def releasever(self, val):
+        if val is None:
+            val = _getsysver(self.installroot,
+                             self.distroverpkg)
+        self.yumvar['releasever'] = val
+
     def yumvar_update_from_env(self):
         for num in range(0, 10):
             env = 'YUM%d' % num
@@ -968,7 +980,7 @@ class VersionGroupConf(BaseConfig):
     pkglist = ListOption()
     run_with_packages = BoolOption(False)
 
-def readStartupConfig(configfile, root, releasever=None):
+def readStartupConfig(configfile, root):
     """Parse Yum's main configuration file and return a
     :class:`StartupConf` instance.  This is required in order to
     access configuration settings required as Yum starts up.
@@ -997,13 +1009,6 @@ def readStartupConfig(configfile, root, releasever=None):
             raise dnf.exceptions.ConfigError("All plugin search paths must be absolute")
     # Stuff this here to avoid later re-parsing
     startupconf._parser = parser
-
-    # setup the release ver here
-    if releasever is None:
-        releasever = _getsysver(startupconf.installroot,
-                                startupconf.distroverpkg)
-    startupconf.releasever = releasever
-
     return startupconf
 
 def readMainConfig(startupconf):
